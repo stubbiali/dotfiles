@@ -3,3 +3,6 @@ venv/
 
 # builds
 build/
+
+# neovim's plugins
+plugged/
