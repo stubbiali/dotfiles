@@ -2,10 +2,12 @@
 " General settings
 " ------------------------------
 " Theme
-highlight SignColumn guibg=#272822
-let g:rehash256 = 1
-let g:molokai_original=1
-let NERDTreeIgnore = ['_site']
+" highlight SignColumn guibg=#272822
+" let g:rehash256 = 1
+" let g:molokai_original=1
+" let NERDTreeIgnore = ['_site']
+colorscheme darcula
+set termguicolors
 
 " Show the line and column numbers of the cursor.
 set ruler

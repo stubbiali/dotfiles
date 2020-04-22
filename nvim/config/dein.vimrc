@@ -40,6 +40,9 @@ if dein#load_state('~/.vim/bundles')
   " deoplete for Python.
   call dein#add('deoplete-plugins/deoplete-jedi')
 
+  " Python goto functionalities.
+  call dein#add('davidhalter/jedi-vim')
+
   " deoplete for C/C++/Objective-C/Objective-C++.
   call dein#add('zchee/deoplete-clang')
 
@@ -48,8 +51,8 @@ if dein#load_state('~/.vim/bundles')
   call dein#add('vim-airline/vim-airline-themes')
 
   " The ultimate solution for snippets in Vim.
-  call dein#add('SirVer/ultisnips')
-  call dein#add('honza/vim-snippets')
+  " call dein#add('SirVer/ultisnips')
+  " call dein#add('honza/vim-snippets')
 
   " Easy code formatting by integrating external tools.
   call dein#add('Chiel92/vim-autoformat')
@@ -59,6 +62,12 @@ if dein#load_state('~/.vim/bundles')
 
   " Sublime Text style multiple selections.
   call dein#add('terryma/vim-multiple-cursors')
+
+  " Insert mode completions with Tabs.
+  call dein#add('ervandew/supertab')
+
+  " Reproduction of the official JetBrains IDE Darcula theme.
+  call dein#add('doums/darcula')
 
   " Install not installed plugins on startup.
   " if dein#check_install()
