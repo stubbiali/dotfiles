@@ -1,9 +1,19 @@
-# virtual environments
+# python virtual environments
 .python-version
-venv*
+venv*/
+
+# python cache
+__pycache__/
+.gt_cache/
+
+# python packaging
+*.egg-info/
 
 # builds
-build*
+build*/
 
 # neovim's plugins
-plugged*
+plugged*/
+
+# pycharm
+.idea/
