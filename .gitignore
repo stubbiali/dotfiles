@@ -1,9 +1,9 @@
 # virtual environments
 .python-version
-venv/
+venv*
 
 # builds
-build/
+build*
 
 # neovim's plugins
-plugged/
+plugged*
