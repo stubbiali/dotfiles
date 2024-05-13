@@ -61,4 +61,3 @@ let g:jedi#show_call_signatures = "1"
 " SuperTab
 let g:SuperTabDefaultCompletionType = "<tab>"
 let g:SuperTabContextDefaultCompletionType = "<tab>"
-

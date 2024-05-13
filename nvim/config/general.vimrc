@@ -19,7 +19,7 @@ set number
 " set formatoptions+=o
 
 " Hard-wrap long lines as you type them.
-set textwidth=80
+set textwidth=100
 
 " Enable modeline.
 set modeline
@@ -127,4 +127,3 @@ if &listchars ==# 'eol:$'
   " set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
   set listchars=tab:>\ ,extends:>,precedes:<,nbsp:+
 endif
-
