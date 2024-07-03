@@ -1,0 +1,57 @@
+# This is a Spack Environment file.
+#
+# It describes a set of packages to be installed, along with
+# configuration settings.
+spack:
+  specs:
+  # add package specs to the `specs` list
+  - autoconf@2.72 %gcc@{{ gcc_version }}
+  - boost@1.85.0 %gcc@{{ gcc_version }}
+  - cmake@{{ cmake_version }} %apple-clang@{{ apple_clang_version }}
+  - git@2.45.1 %apple-clang@{{ apple_clang_version }}
+  - go@1.22.4%apple-clang@{{ apple_clang_version }}
+  - hdf5@1.14.3 %gcc@{{ gcc_version }} +cxx+fortran+hl+mpi+threadsafe+tools ^cmake@{{ cmake_version }}%apple-clang@{{ apple_clang_version }}
+  - neovim@0.10.0 %apple-clang@{{ apple_clang_version }}
+  - netcdf-c@4.9.2 %gcc@{{ gcc_version }} +dap+mpi ^cmake@{{ cmake_version }}%apple-clang@{{ apple_clang_version }}
+  - openmpi@5.0.3 %gcc@{{ gcc_version }} # ^apple-libuuid%apple-clang@{{ apple_clang_version }}
+  - python@3.10.14 %apple-clang@{{ apple_clang_version }}
+  - python@3.11.9 %apple-clang@{{ apple_clang_version }}
+  - python@3.12.0 %apple-clang@{{ apple_clang_version }}
+  - python@3.8.19 %apple-clang@{{ apple_clang_version }}
+  - python@3.9.19 %apple-clang@{{ apple_clang_version }}
+  view: false
+  concretizer:
+    unify: when_possible
+  compilers:
+  - compiler:
+      spec: apple-clang@={{ apple_clang_version }}
+      paths:
+        cc: /usr/bin/clang
+        cxx: /usr/bin/clang++
+        f77: /opt/homebrew/Cellar/gcc@{{ gcc_major_version }}/{{ gcc_version }}/bin/gfortran-{{ gcc_major_version }}
+        fc: /opt/homebrew/Cellar/gcc@{{ gcc_major_version }}/{{ gcc_version }}/bin/gfortran-{{ gcc_major_version }}
+        # f77: /opt/homebrew/Cellar/gcc/14.1.0_1/bin/gfortran-{{ gcc_major_version }}
+        # fc: /opt/homebrew/Cellar/gcc/14.1.0_1/bin/gfortran-{{ gcc_major_version }}
+      flags: {}
+      operating_system: sonoma
+      target: aarch64
+      modules: []
+      environment: {}
+      extra_rpaths: []
+  - compiler:
+      spec: gcc@={{ gcc_version }}
+      paths:
+        cc: /opt/homebrew/Cellar/gcc@{{ gcc_major_version }}/{{ gcc_version }}/bin/gcc-{{ gcc_major_version }}
+        cxx: /opt/homebrew/Cellar/gcc@{{ gcc_major_version }}/{{ gcc_version }}/bin/g++-{{ gcc_major_version }}
+        f77: /opt/homebrew/Cellar/gcc@{{ gcc_major_version }}/{{ gcc_version }}/bin/gfortran-{{ gcc_major_version }}
+        fc: /opt/homebrew/Cellar/gcc@{{ gcc_major_version }}/{{ gcc_version }}/bin/gfortran-{{ gcc_major_version }}
+        # cc: /opt/homebrew/Cellar/gcc/14.1.0_1/bin/gcc-{{ gcc_major_version }}
+        # cxx: /opt/homebrew/Cellar/gcc/14.1.0_1/bin/g++-{{ gcc_major_version }}
+        # f77: /opt/homebrew/Cellar/gcc/14.1.0_1/bin/gfortran-{{ gcc_major_version }}
+        # fc: /opt/homebrew/Cellar/gcc/14.1.0_1/bin/gfortran-{{ gcc_major_version }}
+      flags: {}
+      operating_system: sonoma
+      target: aarch64
+      modules: []
+      environment: {}
+      extra_rpaths: []
