@@ -1,3 +1,5 @@
+#zmodload zsh/zprof
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -71,12 +73,14 @@ HIST_STAMPS="dd.mm.yyyy"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git zsh-completions)
-autoload -U compinit && compinit
+
+#autoload -Uz compinit
+#for dump in ~/.zcompdump(N.mh+24); do
+#  compinit
+#done
+#compinit -C
 
 source $ZSH/oh-my-zsh.sh
-
-# prompt
-PROMPT="%{$fg_bold[green]%}%n%{$fg_bold[green]%}@%{$fg_bold[green]%}%m%{$reset_color%} ${PROMPT}"
 
 # User configuration
 
@@ -129,115 +133,113 @@ alias l='ls -CF'
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+# alias
+alias s='source'
+
+# prompt
+export PS1='%{$fg_bold[green]%}%n@%m ${ret_status}%{$fg_bold[green]%}%{$fg[cyan]%}%~ %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%}$(svn_prompt_info)%{$reset_color%}'
+
+# brew
+(echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> /Users/subbiali/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# compilers: gcc
+# export GCC_ROOT=/opt/homebrew/Cellar/gcc/14.1.0_1
+export GCC_MAJOR_VERSION=13
+export GCC_VERSION=13.3.0
+export GCC_ROOT=/opt/homebrew/Cellar/gcc@${GCC_MAJOR_VERSION}/${GCC_VERSION}
+export PATH="${GCC_ROOT}/bin:${PATH}"
+# note: the second path is needed for the linker to find libemutls_w.a
+export LDFLAGS="-L${GCC_ROOT}/lib/gcc/${GCC_MAJOR_VERSION} -L${GCC_ROOT}/lib/gcc/${GCC_MAJOR_VERSION}/gcc/aarch64-apple-darwin23/${GCC_MAJOR_VERSION}/"
+export LD_LIBRARY_PATH=${GCC_ROOT}/lib/gcc/{GCC_MAJOR_VERSION}:${LD_LIBRARY_PATH}
+export DYLD_LIBRARY_PATH=${GCC_ROOT}/lib/gcc/${GCC_MAJOR_VERSION}:${DYLD_LIBRARY_PATH}
+export CC=${GCC_ROOT}/bin/gcc-${GCC_MAJOR_VERSION}
+export CXX=${GCC_ROOT}/bin/g++-${GCC_MAJOR_VERSION}
+export FC=${GCC_ROOT}/bin/gfortran-${GCC_MAJOR_VERSION}
+
+# compilers: clang
+export CLANG_VERSION=18.1.8
+export CLANG_FULL_VERSION=18.1.8
+export PATH="/opt/homebrew/opt/llvm/bin:${PATH}"
+# export DYLD_LIBRARY_PATH=${DYLD_LIBRARY_PATH}:/opt/homebrew/Cellar/llvm/${CLANG_VERSION}/lib/c++
+
+# compilers: apple-clang
+export APPLE_CLANG_VERSION=15.0.0
+
+# spack
+source ~/Desktop/share/spack/develop/share/spack/setup-env.sh
+spack env activate ~/Desktop/share/spack/develop/env/gcc@"${GCC_VERSION}"-apple-clang@"${APPLE_CLANG_VERSION}"
+
+# boost
+spack load boost %gcc@"${GCC_VERSION}"
+export BOOST_ROOT=$(spack location -i boost %gcc@"${GCC_VERSION}")
+
+# go
+spack load go %apple-clang@"${APPLE_CLANG_VERSION}"
+
+# MPI
+spack load openmpi %gcc@"$GCC_VERSION"
+export MPI_ROOT=$(spack location -i openmpi %gcc@"${GCC_VERSION}")
+export MPICC="$MPI_ROOT"/bin/mpicc
+export MPICXX="$MPI_ROOT"/bin/mpicxx
+export MPIFC="$MPI_ROOT"/bin/mpif90
+
+# hdf5
+spack load hdf5 %gcc@"$GCC_VERSION" +fortran +mpi
+export HDF5_ROOT=$(spack location -i hdf5 %gcc@"${GCC_VERSION}" +fortran +mpi)
+export HDF5_DIR="$HDF5_ROOT"
+
+# netcdf-c
+spack load netcdf-c %gcc@"$GCC_VERSION" +mpi
+export NETCDF_ROOT=$(spack location -i netcdf-c %gcc@"${GCC_VERSION}" +mpi)
+export NETCDF4_DIR="$NETCDF_ROOT"
+alias ncdump="$NETCDF_ROOT"/bin/ncdump
+
+# autoconf
+spack load autoconf %gcc@"${GCC_VERSION}"
+
 # nvim
-alias vim='nvim'
-export VIM=/usr/local/share/nvim
-export VIMRUNTIME=/usr/local/share/nvim/runtime
+spack load neovim %apple-clang@"${APPLE_CLANG_VERSION}"
+export VIM=$(spack location -i neovim %apple-clang@"${APPLE_CLANG_VERSION}")
+alias vim='${VIM}/bin/nvim'
+export VIMRUNTIME="${VIM}"/share/nvim/runtime
+export EDITOR="${VIM}"/bin/nvim
 
-# Gridtools
-export PHD_ROOT=/home/stefano/Desktop/phd/
-export GT4PY_ROOT=/home/stefano/Desktop/phd/gridtools4py
-export TASMANIA_ROOT=/home/stefano/Desktop/phd/tasmania
-export PYTHONPATH=$PYTHONPATH:$PHD_ROOT:$GT4PY_ROOT:$TASMANIA_ROOT
+# python 3.8
+spack load python@3.8.19 %apple-clang@"${APPLE_CLANG_VERSION}"
+py310_root=$(spack location -i python@3.8.19)
+alias py310="$py310_root"/bin/python3
 
-# Pycharm
-export PATH=$PATH:usr/local/pycharm-community-2017.2.4/bin
-export PYCHARM_BIN=/usr/local/pycharm-community-2017.2.4/bin/pycharm.sh
-alias pycharm='$PYCHARM_BIN'
+# python 3.9
+spack load python@3.9.19 %apple-clang@"${APPLE_CLANG_VERSION}"
+py310_root=$(spack location -i python@3.9.19)
+alias py310="$py310_root"/bin/python3
 
-# latex
-alias context='/usr/local/texlive/2019/bin/x86_64-darwin/context'
-alias kpsewhich='/usr/local/texlive/2019/bin/x86_64-darwin/kpsewhich'
-alias latex='/usr/local/texlive/2019/bin/x86_64-darwin/latex'
-alias latexindent='/usr/local/texlive/2019/bin/x86_64-darwin/latexindent'
-alias pdflatex='/usr/local/texlive/2019/bin/x86_64-darwin/pdflatex'
-alias synctex='/usr/local/texlive/2019/bin/x86_64-darwin/synctex'
-alias texhash='/usr/local/texlive/2019/bin/x86_64-darwin/texhash'
+# python 3.10
+spack load python@3.10.14 %apple-clang@"${APPLE_CLANG_VERSION}"
+py310_root=$(spack location -i python@3.10.14)
+alias py310="$py310_root"/bin/python3
 
-# perl
-alias cpanm='/usr/local/Cellar/perl/5.30.0/bin/cpanm'
+# python 3.11
+spack load python@3.11.9 %apple-clang@"${APPLE_CLANG_VERSION}"
+py311_root=$(spack location -i python@3.11.9)
+alias py311="$py311_root"/bin/python3
 
-# generate an encrypted file, removing the original (i.e., unencrypted) file
-encrypt() {
-	openssl aes-128-cbc < $1 > $1.aes-128-cbc
-}
+# python 3.12
+spack load python@3.12.0 %apple-clang@"${APPLE_CLANG_VERSION}"
+py312_root=$(spack location -i python@3.12.0)
+alias py312="$py312_root"/bin/python3
 
-# decrypt an encrypted file
-decrypt() {
-	FILENAME=$1
-	FILENAME="${FILENAME%.*}"
-	openssl aes-128-cbc -d < $1 > $FILENAME
-}
+# ssh
+ssh-add -D
+ssh-add ~/.ssh/id_ed25519_github
+ssh-add ~/.ssh/id_ed25519_lumi
+ssh-add ~/.ssh/id_ed25519_mlux
 
-# decompress compressed archives
-decompress() {
-	FILENAME=$1
-	ROOT="${FILENAME%.*}"
-	EXTENSION="${FILENAME##*.}"
+# totp
+export PATH="/Users/subbiali/Desktop/share/totp/bin:$PATH"
+alias totp='totp-darwin-arm64'
 
-	if [ "$EXTENSION" == "bz2" ]
-	then
-		tar -jxf $FILENAME
-		decompress $ROOT
-	elif [ "$EXTENSION" == "gz" ]
-	then
-		gunzip $FILENAME
-		decompress $ROOT
-	elif [ "$EXTENSION" == "tar" ]
-	then
-		tar -xvf $FILENAME
-		decompress $ROOT
-	elif [ "$EXTENSION" == "tgz" ]
-	then
-		tar -zxf $FILENAME
-		decompress $ROOT
-	elif [ "$EXTENSION" == "xz" ]
-	then
-		tar xf $FILENAME$
-		decompress $ROOT
-	fi
-}
-
-# delete all Vim swap files in a given directory and in all its subdirectories (if any)
-rm_swap() {
-	find $1 -type f -name "*.sw[klmnop]" -delete
-}
-
-# locale
-export LC_ALL=en_US.UTF-8
-
-# setting PATH for Python 3.6
-# the original version is saved in .bash_profile.pysave
-PATH="/Library/Frameworks/Python.framework/Versions/3.6/bin:${PATH}"
-export PATH
-
-# make homebrew's llvm visible
-export PATH="/usr/local/Cellar/llvm/11.0.0/bin:$PATH"
-export LDFLAGS=-L/usr/local/Cellar/llvm/11.0.0/lib
-export CC=/usr/local/Cellar/llvm/11.0.0/bin/clang
-export CXX=/usr/local/Cellar/llvm/11.0.0/bin/clang++
-
-# boost root
-export BOOST_ROOT=/usr/local/Cellar/boost/1.72.0_3
-
-# gcc
-alias gcc='/usr/local/Cellar/gcc/9.3.0/bin/gcc-9'
-alias g++='/usr/local/Cellar/gcc/9.3.0/bin/g++-9'
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/usr/local/share/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/usr/local/share/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/usr/local/share/anaconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/usr/local/share/anaconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
-# pyenv
-if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+# log profiling info
+#zprof
