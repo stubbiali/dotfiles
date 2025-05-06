@@ -1,0 +1,89 @@
+# This is a Spack Environment file.
+#
+# It describes a set of packages to be installed, along with
+# configuration settings.
+spack:
+  specs:
+  # add package specs to the `specs` list
+  - autoconf@2.72 %gcc@14.2.0
+  - boost@1.86.0 %gcc@14.2.0
+  - cdo@2.4.4 %gcc@14.2.0
+  - cmake@3.30.5 %apple-clang@17.0.0
+  - ecbuild@3.7.2 %gcc@14.2.0
+  - eckit@1.27.0 %gcc@14.2.0
+  - fckit@0.11.0 %gcc@14.2.0
+  - fiat@1.2.0 %gcc@14.2.0
+  - gh@2.58.0 %apple-clang@17.0.0
+  - git@2.47.0 %apple-clang@17.0.0
+  - go@1.23.2 %apple-clang@17.0.0
+  - hdf5@1.14.5 +cxx+fortran+hl+mpi+threadsafe+tools %gcc@14.2.0
+  - nco@5.2.4 %gcc@14.2.0
+  - neovim@0.9.0 %apple-clang@17.0.0
+  - netcdf-c@4.9.2 +dap+mpi %gcc@14.2.0
+  - netcdf-fortran@4.6.1 %gcc@14.2.0
+  - openmpi@5.0.5 %gcc@14.2.0
+  - python@3.8.19 %apple-clang@17.0.0
+  - python@3.9.19 %apple-clang@17.0.0
+  - python@3.10.14 %apple-clang@17.0.0
+  - python@3.11.9 %apple-clang@17.0.0
+  - python@3.12.5 %apple-clang@17.0.0
+  - python@3.13.0 %apple-clang@17.0.0
+  view: false
+  concretizer:
+    reuse: true
+    unify: when_possible
+  compilers:
+  - compiler:
+      spec: apple-clang@=17.0.0
+      paths:
+        cc: /usr/bin/clang
+        cxx: /usr/bin/clang++
+        f77: /opt/homebrew/bin/gfortran
+        fc: /opt/homebrew/bin/gfortran
+      flags: {}
+      operating_system: sequoia
+      target: aarch64
+      modules: []
+      environment: {}
+      extra_rpaths: []
+  - compiler:
+      spec: clang@=20.1.3
+      paths:
+        cc: /opt/homebrew/opt/llvm/bin/clang
+        cxx: /opt/homebrew/opt/llvm/bin/clang++
+        f77: /opt/homebrew/bin/gfortran
+        fc: /opt/homebrew/bin/gfortran
+      flags: {}
+      operating_system: sequoia
+      target: aarch64
+      modules: []
+      environment: {}
+      extra_rpaths: []
+  - compiler:
+      spec: gcc@=14.2.0
+      paths:
+        cc: /opt/homebrew/Cellar/gcc/14.2.0_1/bin/gcc-14
+        cxx: /opt/homebrew/Cellar/gcc/14.2.0_1/bin/g++-14
+        f77: /opt/homebrew/Cellar/gcc/14.2.0_1/bin/gfortran
+        fc: /opt/homebrew/Cellar/gcc/14.2.0_1/bin/gfortran
+      flags: {}
+      operating_system: sequoia
+      target: aarch64
+      modules: []
+      environment: {}
+      extra_rpaths: []
+  packages:
+    cmake:
+      require: '~doc+ncurses+ownlibs~qtgui %apple-clang@17.0.0'
+    fftw:
+      require: '%apple-clang@17.0.0'
+    flex:
+      require: '%apple-clang@17.0.0'
+    libffi:
+      require: '@3.4.7 %apple-clang@17.0.0'
+    openmpi:
+      require: '%gcc@14.2.0'
+    python:
+      require: '%apple-clang@17.0.0'
+    tar:
+      require: '@1.34 %apple-clang@17.0.0'

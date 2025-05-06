@@ -1,0 +1,89 @@
+# This is a Spack Environment file.
+#
+# It describes a set of packages to be installed, along with
+# configuration settings.
+spack:
+  specs:
+  # add package specs to the `specs` list
+  - autoconf@2.72 %gcc@{{ gcc_version }}
+  - boost@1.86.0 %gcc@{{ gcc_version }}
+  - cdo@2.4.4 %gcc@{{ gcc_version }}
+  - cmake@3.30.5 %apple-clang@{{ apple_clang_version }}
+  - ecbuild@3.7.2 %gcc@{{ gcc_version }}
+  - eckit@1.27.0 %gcc@{{ gcc_version }}
+  - fckit@0.11.0 %gcc@{{ gcc_version }}
+  - fiat@1.2.0 %gcc@{{ gcc_version }}
+  - gh@2.58.0 %apple-clang@{{ apple_clang_version }}
+  - git@2.47.0 %apple-clang@{{ apple_clang_version }}
+  - go@1.23.2 %apple-clang@{{ apple_clang_version }}
+  - hdf5@1.14.5 +cxx+fortran+hl+mpi+threadsafe+tools %gcc@{{ gcc_version }}
+  - nco@5.2.4 %gcc@{{ gcc_version }}
+  - neovim@0.9.0 %apple-clang@{{ apple_clang_version }}
+  - netcdf-c@4.9.2 +dap+mpi %gcc@{{ gcc_version }}
+  - netcdf-fortran@4.6.1 %gcc@{{ gcc_version }}
+  - openmpi@5.0.5 %gcc@{{ gcc_version }}
+  - python@3.8.19 %apple-clang@{{ apple_clang_version }}
+  - python@3.9.19 %apple-clang@{{ apple_clang_version }}
+  - python@3.10.14 %apple-clang@{{ apple_clang_version }}
+  - python@3.11.9 %apple-clang@{{ apple_clang_version }}
+  - python@3.12.5 %apple-clang@{{ apple_clang_version }}
+  - python@3.13.0 %apple-clang@{{ apple_clang_version }}
+  view: false
+  concretizer:
+    reuse: true
+    unify: when_possible
+  compilers:
+  - compiler:
+      spec: apple-clang@={{ apple_clang_version }}
+      paths:
+        cc: /usr/bin/clang
+        cxx: /usr/bin/clang++
+        f77: /opt/homebrew/bin/gfortran
+        fc: /opt/homebrew/bin/gfortran
+      flags: {}
+      operating_system: sequoia
+      target: aarch64
+      modules: []
+      environment: {}
+      extra_rpaths: []
+  - compiler:
+      spec: clang@={{ clang_version }}
+      paths:
+        cc: /opt/homebrew/opt/llvm/bin/clang
+        cxx: /opt/homebrew/opt/llvm/bin/clang++
+        f77: /opt/homebrew/bin/gfortran
+        fc: /opt/homebrew/bin/gfortran
+      flags: {}
+      operating_system: sequoia
+      target: aarch64
+      modules: []
+      environment: {}
+      extra_rpaths: []
+  - compiler:
+      spec: gcc@={{ gcc_version }}
+      paths:
+        cc: /opt/homebrew/Cellar/gcc/{{ gcc_full_version }}/bin/gcc-{{ gcc_major_version }}
+        cxx: /opt/homebrew/Cellar/gcc/{{ gcc_full_version }}/bin/g++-{{ gcc_major_version }}
+        f77: /opt/homebrew/Cellar/gcc/{{ gcc_full_version }}/bin/gfortran
+        fc: /opt/homebrew/Cellar/gcc/{{ gcc_full_version }}/bin/gfortran
+      flags: {}
+      operating_system: sequoia
+      target: aarch64
+      modules: []
+      environment: {}
+      extra_rpaths: []
+  packages:
+    cmake:
+      require: '~doc+ncurses+ownlibs~qtgui %apple-clang@{{ apple_clang_version }}'
+    fftw:
+      require: '%apple-clang@{{ apple_clang_version }}'
+    flex:
+      require: '%apple-clang@{{ apple_clang_version }}'
+    libffi:
+      require: '@3.4.7 %apple-clang@{{ apple_clang_version }}'
+    openmpi:
+      require: '%gcc@{{ gcc_version }}'
+    python:
+      require: '%apple-clang@{{ apple_clang_version }}'
+    tar:
+      require: '@1.34 %apple-clang@{{ apple_clang_version }}'

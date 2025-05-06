@@ -4,10 +4,11 @@ import os
 
 
 DATA = {
-    "apple_clang_version": "15.0.0",
-    "cmake_version": "3.29.6",
+    "apple_clang_version": "17.0.0",
+    "clang_version": "20.1.3",
+    "gcc_full_version": "14.2.0_1",
     "gcc_major_version": "14",
-    "gcc_version": "14.1.0",
+    "gcc_version": "14.2.0",
 }
 
 
